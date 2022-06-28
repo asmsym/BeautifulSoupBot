@@ -9,8 +9,8 @@ def download():
     url = e.get()
     print(url)
     preferd= str(var.get())
-    if  "season" in e.get().lower():
-        preferd ="3"
+#    if  "season" in e.get().lower():
+#        preferd ="3"
     choise= str(man.get())
     if preferd =='1':
         if pix.get() ==1:

@@ -7,28 +7,40 @@ def loadpage(url):
     global soup
     page = urlopen(Request(url,headers={"User-Agent" :"Mozila/5"}))
     soup = BeautifulSoup(page.read(),'lxml')
-def getDownloadPage():
+
+
+
+def getDownloadPage(url):
+    loadpage(url)
     url = soup.find('input',{'name':'FU'}).get('value')
     print(url)
     loadpage(url)
-def getGDS(p):
+
+
+def getGDS(url,p):
     global boabd
+    print("Downloading Main Page")
+    getDownloadPage(url)
     if p == '720p':
         q="HEVC"
     else:
         q="kibria"
     allstrong = soup.findAll("strong")
+    print("Finding Hindi dubbed")
     for item in allstrong:
         if "hindi" in str(item).lower():
             print(item)
             strong = allstrong[allstrong.index(item):allstrong.index(item)+6]
+            break
 
         elif "dual" in str(item).lower():
             print(item)
             strong = allstrong[allstrong.index(item):allstrong.index(item)+6]
+            break
 
         else:
             strong = allstrong
+    print("Finding Download link")
 
     for item in strong:
         if p  in str(item) and q not in str(item):
@@ -56,12 +68,14 @@ def getGDS(p):
                     print(link)
                     break
             break
-
-
-
     boabd =soup.find('input').get('value')
+    print(boabd)
     webbrowser.open(boabd)
-def getGDrive(p):
+
+
+
+def getGDrive(url,p):
+    getDownloadPage(url)
     global boabd
     if p == '720p':
         q="HEVC"

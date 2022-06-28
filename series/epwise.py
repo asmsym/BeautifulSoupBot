@@ -12,8 +12,9 @@ def loadpage(url):
     page = urlopen(Request(url,headers={"User-Agent" :"Mozila/5"}))
     soup = BeautifulSoup(page.read(),'lxml')
 def getDownloadPage(url):
+    global durl
     loadMainPage(url)
-    url = mainSoup.find('input',{'name':'FU'}).get('value')
+    durl = mainSoup.find('input',{'name':'FU'}).get('value')
     print('Download Page URL :',url)
     loadMainPage(url)
 def getGDSep(season,ep,pixel,url):
@@ -58,8 +59,8 @@ def getGDSep(season,ep,pixel,url):
             break
     boabd =soup.find('input').get('value')
     print(boabd)
-def getGDriveep(season,ep,pixel):
-
+def getGDriveep(season,ep,pixel,url):
+    getDownloadPage(url)
     allstrong = mainSoup.findAll('strong')
     strong = allstrong
     for item in allstrong:
@@ -105,7 +106,8 @@ def GDSorGDrive(choise,season,i,pixel,url):
         getGDSep(season,i,pixel,url)
     elif choise =='2':
         getGDriveep(season,i,pixel,url)
-
+    elif choise =='3':
+        customDownload(season,i,pixel,url)
 def episodeSelect(choise,season,episode,pixel,url):
     if '-' in episode:
         episodeRange=episode.split("-")
@@ -135,9 +137,12 @@ def takeInput():
     print("How you want to download your file")
     print("1. GSD")
     print("2. GDrive")
-    GDSorGDrive = input("Enter your Choise (GSD or GDrive) : ")
+    print("3. Custom")
+    GDSorGDrive = input("Enter your Choise (GSD or GDrive or Custom) : ")
     episode =input("Enter the Episode you want to download : ")
     return GDSorGDrive,season,episode,pixel
+
+
 
 
 ##getDownloadPage('https://mlwbd.love/movie/the-boys-season-3/')
